@@ -1,5 +1,6 @@
 import requests
 import time
+from utils.tokenizer import count_tokens
 
 def run_multiple_times(prompt: str, model: str, count: int):
     run_times = []
@@ -10,8 +11,11 @@ def run_multiple_times(prompt: str, model: str, count: int):
         output = run_model(prompt, model)
         elapsed = time.time() - start
         run_times.append(elapsed)
+        tokens = count_tokens(output)
+        tok_per_sec = tokens / elapsed
 
         print(f"Response Time: {elapsed:.2f}s")
+        print(f"{tokens} tokens in {elapsed:.2f}s -> {tok_per_sec:.1f} tok/s")
     
     avg_time = sum(run_times) / len(run_times)
     print(f"\n--- Summary for {model} ---\n")
