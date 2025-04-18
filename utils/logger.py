@@ -16,6 +16,29 @@ def init_csv(csv_path: str):
                 "token_per_second"
             ])
 
+def log_cold_start(
+        csv_path: str,
+        session_timestamp: str,
+        model: str,
+        prompt: str,
+        cold_start_time: float
+):
+    """
+    Append a row indicating the cold-start time for a session.
+    """
+    with open(csv_path, "a", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow([
+            session_timestamp,
+            model,
+            prompt,
+            "COLD_START",
+            f"{cold_start_time:.4f}",
+            "",
+            "",
+            f"{cold_start_time:.4f}"
+        ])
+
 def log_run(
     csv_path: str,
     session_timestamp: str,
@@ -57,6 +80,7 @@ def log_summary(
             "AVERAGE",
             f"{average_time:.4f}",
             "",
+            "",
             ""
         ])
         writer.writerow([
@@ -65,6 +89,7 @@ def log_summary(
             prompt,
             "TOTAL",
             f"{total_time:.4f}",
+            "",
             "",
             ""
         ])

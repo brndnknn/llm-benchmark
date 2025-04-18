@@ -1,12 +1,29 @@
 import requests
 import time
+import subprocess
 from datetime import datetime
 from utils.tokenizer import count_tokens
 from utils.logger import init_csv, log_run, log_summary
 
+
+def test_cold_start(model: str, prompt: str) -> float:
+    """
+    Measures cold-start time: stops Ollama, then runs the model from scratch. Returns elapsed seconds.
+    """
+
+    # Stops Ollama server
+    subprocess.run(["ollama", "stop"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+    # Time the cold start load + generate
+    start = time.time()
+    _ = run_model(prompt, model)
+    
+    return time.time() - start
+
+
+
 def run_multiple_times(prompt: str, model: str, count: int, csv_path: str):
     run_times = []
-    init_csv(csv_path)
     session_ts = datetime.now().isoformat()
 
     for i in range(count):
