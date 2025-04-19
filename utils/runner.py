@@ -62,3 +62,4 @@ def run_model(prompt: str, model: str) -> str:
 
     response.raise_for_status()
     return response.json()["response"]
+
