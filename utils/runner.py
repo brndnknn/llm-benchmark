@@ -57,7 +57,7 @@ def run_model(prompt: str, model: str) -> str:
             "prompt": prompt,
             "stream": False
         }, 
-        timeout=60
+        timeout=180
     )
 
     response.raise_for_status()

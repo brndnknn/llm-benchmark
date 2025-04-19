@@ -74,7 +74,7 @@ def log_summary(
         writer = csv.writer(f)
         # blank out columns we don't need in summary
         writer.writerow([
-            session_timestamp,
+            "",
             model,
             prompt,
             "AVERAGE",
@@ -84,7 +84,7 @@ def log_summary(
             ""
         ])
         writer.writerow([
-            session_timestamp,
+            "",
             model,
             prompt,
             "TOTAL",
