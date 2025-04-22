@@ -7,7 +7,6 @@ def init_csv(csv_path: str):
         with open(csv_path, "w", newline="") as f: 
             writer = csv.writer(f)
             writer.writerow([
-                "session_timestamp",
                 "model",
                 "prompt",
                 "run_index",
@@ -16,9 +15,12 @@ def init_csv(csv_path: str):
                 "token_per_second"
             ])
 
+def append(csv_path: str, row: list[str]):
+    with open(csv_path, "a", newline="") as f:
+        csv.writer(f).writerow(row)
+
 def log_cold_start(
         csv_path: str,
-        session_timestamp: str,
         model: str,
         prompt: str,
         cold_start_time: float
@@ -26,22 +28,10 @@ def log_cold_start(
     """
     Append a row indicating the cold-start time for a session.
     """
-    with open(csv_path, "a", newline="") as f:
-        writer = csv.writer(f)
-        writer.writerow([
-            session_timestamp,
-            model,
-            prompt,
-            "COLD_START",
-            f"{cold_start_time:.4f}",
-            "",
-            "",
-            f"{cold_start_time:.4f}"
-        ])
+    append(csv_path, [model, prompt, "COLD_START", f"{cold_start_time:.4f}"])
 
 def log_run(
     csv_path: str,
-    session_timestamp: str,
     model: str,
     prompt: str,
     run_index: int,
@@ -49,10 +39,7 @@ def log_run(
     token_count: int,
     tokens_per_second: float
 ):
-    with open(csv_path, "a", newline="") as f:
-        writer = csv.writer(f)
-        writer.writerow([
-            session_timestamp,
+    append(csv_path, [
             model,
             prompt,
             run_index + 1,
@@ -63,33 +50,21 @@ def log_run(
 
 def log_summary(
     csv_path: str,
-    session_timestamp: str,
     model: str,
     prompt: str,
     average_time: float,
     total_time: float
 ):
     """Append two summary rows: one for the average, one for the total."""
-    with open(csv_path, "a", newline="") as f:
-        writer = csv.writer(f)
-        # blank out columns we don't need in summary
-        writer.writerow([
-            "",
+    append(csv_path, [
             model,
             prompt,
             "AVERAGE",
             f"{average_time:.4f}",
-            "",
-            "",
-            ""
         ])
-        writer.writerow([
-            "",
+    append(csv_path, [
             model,
             prompt,
             "TOTAL",
             f"{total_time:.4f}",
-            "",
-            "",
-            ""
         ])

@@ -37,7 +37,7 @@ def run_multiple_times(prompt: str, model: str, count: int, csv_path: str):
 
         print(f"Response Time: {elapsed:.2f}s")
         print(f"{tokens} tokens in {elapsed:.2f}s -> {tok_per_sec:.1f} tok/s")
-        log_run(csv_path, session_ts, model, prompt, i, elapsed, tokens, tok_per_sec)
+        log_run(csv_path, model, prompt, i, elapsed, tokens, tok_per_sec)
     
     total_time = sum(run_times)
     avg_time = total_time / len(run_times)
@@ -46,7 +46,7 @@ def run_multiple_times(prompt: str, model: str, count: int, csv_path: str):
     print(f"   - Average run: {avg_time:.2f}s")
     print(f"   - Total time:  {total_time:.2f}s")
 
-    log_summary(csv_path, session_ts, model, prompt, avg_time, total_time)
+    log_summary(csv_path, model, prompt, avg_time, total_time)
 
 
 def run_model(prompt: str, model: str) -> str:
